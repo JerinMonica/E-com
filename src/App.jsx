@@ -11,9 +11,8 @@ import OrderPage from './Pages/OrderPage'; // ✅ New import
 import Userpage from './Pages/Userpage';
 import Login from './Pages/Login';
 
-// Extra components
-import ProductList from './components/ProductList';
-import Sample from './components/Sample';
+
+
 import ProtectedRoute from './components/ProtectedRoute';
 
 function App() {
