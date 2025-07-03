@@ -27,9 +27,9 @@ function App() {
         <Route path="/" element={<ProtectedRoute><Home /></ProtectedRoute>} />
         <Route path="/product" element={<ProtectedRoute><Product /></ProtectedRoute>} />
         <Route path="/admin" element={<ProtectedRoute><Admin /></ProtectedRoute>} />
-        <Route path="/productlist" element={<ProtectedRoute><ProductList /></ProtectedRoute>} />
+        
         <Route path="/cart" element={<ProtectedRoute><Cart /></ProtectedRoute>} />
-        <Route path="/zz" element={<ProtectedRoute><Sample /></ProtectedRoute>} />
+        
         <Route path="/order" element={<ProtectedRoute><Deliver /></ProtectedRoute>} />
         <Route path="/orders" element={<ProtectedRoute><OrderPage /></ProtectedRoute>} /> {/* ✅ NEW ROUTE */}
       </Routes>
