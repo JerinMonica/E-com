@@ -11,7 +11,7 @@ import OrderPage from './Pages/OrderPage'; // ✅ New import
 import Userpage from './Pages/Userpage';
 import Login from './Pages/Login';
 
-
+// Extra components
 
 import ProtectedRoute from './components/ProtectedRoute';
 
@@ -29,7 +29,14 @@ function App() {
         <Route path="/admin" element={<ProtectedRoute><Admin /></ProtectedRoute>} />
         
         <Route path="/cart" element={<ProtectedRoute><Cart /></ProtectedRoute>} />
-        
+        <Route
+  path="/admin"
+  element={
+    <ProtectedRoute allowedRoles={['admin']}>
+      <Admin />
+    </ProtectedRoute>
+  }
+/>
         <Route path="/order" element={<ProtectedRoute><Deliver /></ProtectedRoute>} />
         <Route path="/orders" element={<ProtectedRoute><OrderPage /></ProtectedRoute>} /> {/* ✅ NEW ROUTE */}
       </Routes>
