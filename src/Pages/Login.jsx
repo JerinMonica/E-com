@@ -27,12 +27,15 @@ const Login = () => {
         password: trimmedPassword,
       });
 
-      if (res.data && res.data.userid && res.data.name) {
-        // ✅ Store full user session
+      const { userid, name, role } = res.data;
+
+      if (userid && name && role) {
+        // ✅ Store full user info
         const user = {
-          userid: res.data.userid,
-          name: res.data.name,
-          email: trimmedEmail
+          userid,
+          name,
+          email: trimmedEmail,
+          role
         };
 
         localStorage.setItem('user', JSON.stringify(user));
@@ -41,7 +44,13 @@ const Login = () => {
         alert('✅ Login successful!');
         setEmailid('');
         setPassword('');
-        navigate('/'); // ✅ Redirect to home page
+
+        // ✅ Redirect based on role
+        if (role === 'admin') {
+          navigate('/admin');
+        } else {
+          navigate('/');
+        }
       } else {
         alert('❌ Login failed. Please try again.');
       }
@@ -64,6 +73,7 @@ const Login = () => {
 
       <div className="container d-flex justify-content-center">
         <div className="card shadow p-4" style={{ width: '100%', maxWidth: '450px', borderRadius: '12px' }}>
+          {/* Email */}
           <div className="form-floating mb-3">
             <input
               type="email"
@@ -77,6 +87,7 @@ const Login = () => {
             <label htmlFor="floatingEmail">📧 Email address</label>
           </div>
 
+          {/* Password */}
           <div className="form-floating mb-3 position-relative">
             <input
               type={showPassword ? 'text' : 'password'}
@@ -102,6 +113,7 @@ const Login = () => {
             </small>
           </div>
 
+          {/* Submit button */}
           <button
             className="btn btn-success w-100 mt-2"
             onClick={handleLogin}
@@ -110,6 +122,7 @@ const Login = () => {
             {loading ? '🔄 Logging in...' : '🔓 Login'}
           </button>
 
+          {/* Register link */}
           <p className="text-center mt-3">
             Don't have an account? <Link to="/userpage">📝 Register</Link>
           </p>
