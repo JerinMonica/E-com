@@ -23,6 +23,7 @@ def create_userdetail():
         username = data.get('username')
         emailid = data.get('emailid', '').lower()
         password = data.get('password')
+        role = data.get('role', 'user')  # default to 'user' if not provided
 
         if not username or not emailid or not password:
             return jsonify({'error': 'Missing required fields'}), 400
@@ -37,9 +38,9 @@ def create_userdetail():
         hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
 
         cursor.execute("""
-            INSERT INTO userdetails (username, emailid, password)
-            VALUES (%s, %s, %s)
-        """, (username, emailid, hashed_password))
+            INSERT INTO userdetails (username, emailid, password, role)
+            VALUES (%s, %s, %s, %s)
+        """, (username, emailid, hashed_password, role))
 
         conn.commit()
         userid = cursor.lastrowid
@@ -78,7 +79,8 @@ def login():
         return jsonify({
             'message': 'Login successful',
             'userid': user['userid'],
-            'name': user['username']  # ✅ included for frontend
+            'name': user['username'],
+            'role': user['role']  # 🔐 Send role to frontend
         }), 200
 
     except Exception as e:
@@ -93,7 +95,7 @@ def view_userdetail():
     try:
         conn = db_connection()
         cursor = conn.cursor(dictionary=True)
-        cursor.execute("SELECT userid, username, emailid FROM userdetails")
+        cursor.execute("SELECT userid, username, emailid, role FROM userdetails")
         users = cursor.fetchall()
         return jsonify(users) if users else jsonify({'message': 'No users found'}), 404
     except Exception as e:
@@ -108,7 +110,7 @@ def single_user(userid):
     try:
         conn = db_connection()
         cursor = conn.cursor(dictionary=True)
-        cursor.execute("SELECT userid, username, emailid FROM userdetails WHERE userid = %s", (userid,))
+        cursor.execute("SELECT userid, username, emailid, role FROM userdetails WHERE userid = %s", (userid,))
         user = cursor.fetchone()
         return jsonify(user) if user else jsonify({'message': 'User not found'}), 404
     except Exception as e:
@@ -125,6 +127,7 @@ def update_user_detail(userid):
         username = data.get('username')
         emailid = data.get('emailid', '').lower()
         password = data.get('password')
+        role = data.get('role', 'user')  # update role if provided, default 'user'
 
         if not username or not emailid or not password:
             return jsonify({'error': 'Missing required fields'}), 400
@@ -135,9 +138,9 @@ def update_user_detail(userid):
         cursor = conn.cursor()
         cursor.execute("""
             UPDATE userdetails
-            SET username = %s, emailid = %s, password = %s
+            SET username = %s, emailid = %s, password = %s, role = %s
             WHERE userid = %s
-        """, (username, emailid, hashed_password, userid))
+        """, (username, emailid, hashed_password, role, userid))
 
         conn.commit()
         return jsonify({'message': 'User details updated successfully'}), 200
