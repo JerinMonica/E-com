@@ -10,7 +10,8 @@ const Userpage = () => {
   const [form, setForm] = useState({
     username: '',
     emailid: '',
-    password: ''
+    password: '',
+    role: 'user' // default role
   });
 
   const [showPassword, setShowPassword] = useState(false);
@@ -20,10 +21,10 @@ const Userpage = () => {
   };
 
   const handleSubmit = async () => {
-    const { username, emailid, password } = form;
+    const { username, emailid, password, role } = form;
 
     // Simple validation
-    if (!username || !emailid || !password) {
+    if (!username || !emailid || !password || !role) {
       alert('⚠️ Please fill all the fields.');
       return;
     }
@@ -36,14 +37,13 @@ const Userpage = () => {
     try {
       const res = await axios.post(API_BASE, form);
 
-      // Save userId to localStorage
-      const userId = res.data.id;
+      const userId = res.data.userid;
       localStorage.setItem('userId', userId);
 
-      alert('🎉 Account created and logged in!');
-      setForm({ username: '', emailid: '', password: '' });
+      alert('🎉 Account created successfully!');
+      setForm({ username: '', emailid: '', password: '', role: 'user' });
 
-      // Redirect to home/product/cart etc.
+      // Redirect to homepage
       navigate('/');
     } catch (error) {
       console.error(error);
@@ -58,6 +58,7 @@ const Userpage = () => {
 
       <div className="container d-flex justify-content-center">
         <div className="card shadow p-4" style={{ width: '100%', maxWidth: '500px', borderRadius: '12px' }}>
+          
           {/* Username */}
           <div className="form-floating mb-3">
             <input
@@ -116,6 +117,21 @@ const Userpage = () => {
             <div className="form-text mt-1">
               Password must be at least 8 characters.
             </div>
+          </div>
+
+          {/* Role selection */}
+          <div className="form-floating mb-3">
+            <select
+              className="form-select"
+              name="role"
+              value={form.role}
+              onChange={handleChange}
+              required
+            >
+              <option value="user">🧑 User</option>
+              <option value="admin">🛠️ Admin</option> {/* Optional */}
+            </select>
+            <label htmlFor="role">👥 Select Role</label>
           </div>
 
           <button
