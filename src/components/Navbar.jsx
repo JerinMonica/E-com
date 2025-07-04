@@ -23,27 +23,27 @@ const Navbar = () => {
           boxShadow: '0 4px 12px rgba(0, 0, 0, 0.4)',
         }}
       >
-        <div className="container-fluid d-flex align-items-center justify-content-between gap-3 flex-wrap">
+        <div className="container-fluid d-flex align-items-center justify-content-between flex-nowrap gap-4">
           {/* Brand Logo */}
-          <Link className="navbar-brand d-flex align-items-center" to="/">
-            <img src="/logo.png" alt="Logo" style={{ height: '45px', width: 'auto' }} />
+          <Link className="navbar-brand d-flex align-items-center me-3" to="/">
+            <img src="/logo.png" alt="Logo" style={{ height: '50px', width: 'auto' }} />
           </Link>
 
           {/* Search Box */}
-          <form className="d-flex align-items-center search-form ms-2 me-auto">
+          <form className="d-flex align-items-center search-form flex-grow-1 mx-3">
             <input
               className="form-control search-input"
               type="search"
-              placeholder="Search products..."
+              placeholder="🔎 Search products..."
               aria-label="Search"
             />
             <button className="btn search-btn" type="submit">
-              🔍
+              Go
             </button>
           </form>
 
           {/* Navigation Links */}
-          <ul className="navbar-nav d-flex flex-row gap-3 align-items-center mb-0">
+          <ul className="navbar-nav d-flex flex-row align-items-center gap-3 mb-0 ms-3 flex-shrink-0">
             <li className="nav-item">
               <Link to="/" className={`nav-link ${isActive('/') ? 'active-tab home' : ''}`}>
                 🏠 Home
@@ -89,16 +89,11 @@ const Navbar = () => {
                 </li>
               </>
             ) : (
-              <>
-                <li className="nav-item">
-                  <span className="nav-link">👋 {user.name} ({user.role})</span>
-                </li>
-                <li className="nav-item">
-                  <button className="btn btn-sm btn-outline-light" onClick={handleLogout}>
-                    🚪 Logout
-                  </button>
-                </li>
-              </>
+              <li className="nav-item">
+                <button className="btn btn-sm btn-outline-light" onClick={handleLogout}>
+                  🚪 Logout
+                </button>
+              </li>
             )}
           </ul>
         </div>
@@ -106,28 +101,48 @@ const Navbar = () => {
 
       {/* Styles */}
       <style>{`
+        .container-fluid {
+          width: 100vw;
+          padding: 0 40px;
+        }
+
         .search-form {
-          max-width: 400px;
-          flex-grow: 1;
+          max-width: 1000px;
+          width: 100%;
+          background: rgba(255, 255, 255, 0.1);
+          border-radius: 50px;
+          overflow: hidden;
+          box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
         }
 
         .search-input {
           border: none;
-          height: 40px;
-          border-top-left-radius: 50px;
-          border-bottom-left-radius: 50px;
-          padding-left: 16px;
+          height: 48px;
+          padding-left: 20px;
           width: 100%;
+          font-size: 16px;
+          background: transparent;
+          color: white;
+        }
+
+        .search-input::placeholder {
+          color: #ccc;
+        }
+
+        .search-input:focus {
+          outline: none;
+          background: rgba(255, 255, 255, 0.05);
         }
 
         .search-btn {
           background-color: #f0ad4e;
           color: black;
-          border-top-right-radius: 50px;
-          border-bottom-right-radius: 50px;
           font-weight: 600;
-          padding: 0 16px;
-          height: 40px;
+          padding: 0 20px;
+          height: 48px;
+          font-size: 16px;
+          border: none;
+          border-radius: 0 50px 50px 0;
         }
 
         .nav-link {
@@ -137,6 +152,7 @@ const Navbar = () => {
           border-radius: 30px;
           transition: all 0.3s ease;
           text-decoration: none;
+          white-space: nowrap;
         }
 
         .nav-link:hover {
@@ -165,6 +181,7 @@ const Navbar = () => {
           .container-fluid {
             flex-direction: column;
             align-items: flex-start;
+            padding: 10px 20px;
           }
 
           .search-form {
@@ -194,4 +211,3 @@ const Navbar = () => {
 };
 
 export default Navbar;
-
